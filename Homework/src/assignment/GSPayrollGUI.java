@@ -1,9 +1,12 @@
 package assignment;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,13 +17,28 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class GSPayrollGUI extends Application{
 	
 	private EmployeeRoster bruhRoster = new EmployeeRoster();
-	private List<Employee> bruhList = bruhRoster.getRoster();
+	private ArrayList<Employee> bruhList = bruhRoster.getRoster();
 	private Iterator<Employee> ie = bruhList.iterator();
+	private File file;
+	private int i = 0;
+	
+	//Text Fields
+	private TextField first = new TextField();
+	private TextField last = new TextField();
+	private TextField id = new TextField();
+	
+	//Radio Buttons
+	private RadioButton southern = new RadioButton("Southern University");
+	private RadioButton eastern = new RadioButton("Eastern College");
+	private RadioButton hourly = new RadioButton("Hourly Paid");
+	private RadioButton monthly = new RadioButton("Monthly Paid");
+	
 	
 	public static void main(String[] args) {
 		launch();
@@ -51,10 +69,7 @@ public class GSPayrollGUI extends Application{
 		
 	}
 
-	private HBox createPayTypeRadioButtons() {
-		RadioButton hourly = new RadioButton("Hourly Paid");
-		RadioButton monthly = new RadioButton("Monthly Paid");
-		
+	public HBox createPayTypeRadioButtons() {
 		ToggleGroup pay = new ToggleGroup();
 		hourly.setToggleGroup(pay);
 		monthly.setToggleGroup(pay);
@@ -65,9 +80,7 @@ public class GSPayrollGUI extends Application{
 		return payType;
 	}
 
-	private HBox createSchoolTypeRadioButtons() {
-		RadioButton southern = new RadioButton("Southern University");
-		RadioButton eastern = new RadioButton("Eastern College");
+	public HBox createSchoolTypeRadioButtons() {
 		
 		ToggleGroup school = new ToggleGroup();
 		southern.setToggleGroup(school);
@@ -79,11 +92,7 @@ public class GSPayrollGUI extends Application{
 		return schoolType;
 	}
 
-	private VBox createLabelAndTextFields() {
-		TextField first = new TextField();
-		TextField last = new TextField();
-		TextField id = new TextField();
-		
+	public VBox createLabelAndTextFields() {
 		Label firstName = new Label("First Name");
 		Label lastName = new Label("Last Name");
 		Label studentId = new Label("Student ID");
@@ -103,10 +112,55 @@ public class GSPayrollGUI extends Application{
 		return txtLbl;
 	}
 
-	private GridPane createButtons() {
+	public GridPane createButtons() {
+		//Create Buttons
 		Button load = new Button("LOAD");
 		Button next = new Button("NEXT");
 		Button clear = new Button("CLEAR");
+		
+		//Assign actions to each button
+		//Action for load button
+		load.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				FileChooser fc = new FileChooser(); //Creating a FileChooser Object
+				file = fc.showOpenDialog(null);
+				String filename = file.getAbsolutePath();
+				bruhRoster.loadEmployeesFromFile(filename);
+			}
+		});
+		
+		//Action for next button
+		next.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				bruhList = bruhRoster.getRoster();
+				Employee bruh = bruhList.get(i);
+				first.setText(((Student) bruh).getFname());
+				last.setText(((Student) bruh).getLname());
+				id.setText(((Student) bruh).getId());
+				if (bruhList.get(i) instanceof SouthernStudentMth || bruhList.get(i) instanceof SouthernStudentHrly) {
+					southern.setSelected(true);
+				} else eastern.setSelected(true);
+				if (bruhList.get(i) instanceof EasternStudentHrly || bruhList.get(i) instanceof SouthernStudentHrly) {
+					hourly.setSelected(true);
+				} else monthly.setSelected(true);
+				
+				i += 1;
+			}
+		});
+		
+		//Action for clear button
+		clear.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				first.clear();
+				last.clear();
+				id.clear();
+				southern.setSelected(false);
+				eastern.setSelected(false);
+				hourly.setSelected(false);
+				monthly.setSelected(false);
+				i = 0;
+			}
+		});
 		
 		GridPane buttonPane = new GridPane();
 		buttonPane.add(load, 0, 0);
@@ -115,6 +169,5 @@ public class GSPayrollGUI extends Application{
 		
 		return buttonPane;
 	}
-	
 
 }
