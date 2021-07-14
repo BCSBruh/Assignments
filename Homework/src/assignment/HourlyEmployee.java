@@ -8,11 +8,11 @@ public interface HourlyEmployee extends Employee{
 	
 	public void setHourlyRate(double perHour);
 	
-	public void setTotalHoursForWeek(double hoursWorked);
+	public void setTotalHoursForWeek(int hoursWorked);
 	
 	public double getHourlyRate();
 	
-	public double getTotalHoursForWeek();
+	public int getTotalHoursForWeek();
 	
 	
 

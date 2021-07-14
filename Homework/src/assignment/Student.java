@@ -26,7 +26,7 @@ public abstract class Student {
 	public String getLname() {
 		return lname;
 	}
-	 
+	
 	public String toString() {
 		return "This is " + this.getFname() + " " + this.getLname();
 	}

@@ -2,7 +2,7 @@ package assignment;
 
 public class EasternStudentHrly extends Student implements HourlyEmployee {
 	//class fields
-	private double hoursWorked;
+	private int hoursWorked;
 	private double perHour;
 	private String id;
 	
@@ -82,7 +82,7 @@ public class EasternStudentHrly extends Student implements HourlyEmployee {
 	
 	//sets the Student's total hours for the week
 	@Override
-	public void setTotalHoursForWeek(double hoursWorked) {
+	public void setTotalHoursForWeek(int hoursWorked) {
 		this.hoursWorked = hoursWorked;
 	}
 	
@@ -103,7 +103,7 @@ public class EasternStudentHrly extends Student implements HourlyEmployee {
 	
 	//returns the total hours worked for the week
 	@Override
-	public double getTotalHoursForWeek() {
+	public int getTotalHoursForWeek() {
 		return hoursWorked;
 	}
 }

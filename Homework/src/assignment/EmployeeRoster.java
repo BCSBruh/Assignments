@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeeRoster {
 	private ArrayList<Employee> roster = new ArrayList<Employee>();
@@ -122,9 +123,10 @@ public class EmployeeRoster {
 	public int getInvalidEmployeeType() {
 		return InvalidEmployeeType;
 	}
-	
-	public ArrayList<Employee> getRoster() {
-		return roster;
+
+
+	public List<Employee> getRoster() {
+		return this.roster;
 	}
 
 }
